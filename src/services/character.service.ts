@@ -46,22 +46,41 @@ function parseCharacterBio() {
     return Object.fromEntries(bio);
 }
 
+function parseCharacterPassives() {
+    const passivesNode = document.querySelector("#scroll_passive_talent ~ .item_main_table");
+    const passiveDescs = Array.from(passivesNode!.querySelectorAll("div.skill_desc_layout")).map(
+        (data) => data.textContent
+    );
+
+    return Array.from(passivesNode!.querySelectorAll("tr:nth-child(odd)")).map((row, i) => ({
+        name: row.querySelector("a")!.textContent,
+        description: passiveDescs[i],
+        imgPath: row.querySelector("img.itempic")!.getAttribute("src"),
+    }));
+}
+
 export function parseCharacterPageData() {
     const bio = parseCharacterBio();
     const stats = parseCharacterStats();
+    const passives = parseCharacterPassives();
 
     return {
         bio,
         stats,
+        passives,
     };
 }
+
+// TODO: Add constellations, talents,
 
 export interface ParseCharacter {
     bio: () => any;
     stats: () => any;
+    passives: () => any;
 }
 
 export const parseCharacter: ParseCharacter = {
     bio: parseCharacterBio,
     stats: parseCharacterStats,
+    passives: parseCharacterPassives,
 };
