@@ -1,6 +1,8 @@
 import express from "express";
 import http from "http";
+
 import routesLoader from "./loaders/routesLoader";
+import { port } from "./utils/constants";
 
 const app = express();
 const server = http.createServer(app);
@@ -16,5 +18,4 @@ process.on("unhandledRejection", (err) => {
     process.exit(1);
 });
 
-const port = process.env.PORT || 3000;
 server.listen(port, () => console.log("Listening at port %d", port));
