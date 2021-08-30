@@ -5,6 +5,7 @@ import {
     parseCharactersPageData,
     parseCharacterPageData,
     parseCharacter,
+    ParseCharacter,
 } from "./../services/character.service";
 
 export const getCharacters: Handler = async (_, res) => {
@@ -26,7 +27,10 @@ export const getCharacterInfo: Handler = async (req, res) => {
     if (!char) return res.status(404).send(`Character: ${char} was not found.`);
     if (!info) return res.status(404).send(`Data type: ${info} was not found.`);
 
-    const data = await scraper(`${baseUrlEndpoint}/db/char/${char}?lang=EN`, parseCharacter[info]);
+    const data = await scraper(
+        `${baseUrlEndpoint}/db/char/${char}?lang=EN`,
+        parseCharacter[info as keyof ParseCharacter]
+    );
 
     res.send(data);
 };
