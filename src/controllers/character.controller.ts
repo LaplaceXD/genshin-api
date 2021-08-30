@@ -1,7 +1,11 @@
 import { scraper } from "../utils/scraper";
 import { Handler } from "express";
 import { baseUrlEndpoint } from "../utils/constants";
-import { parseCharactersPageData, parseCharacterPageData } from "./../services/character.service";
+import {
+    parseCharactersPageData,
+    parseCharacterPageData,
+    parseCharacter,
+} from "./../services/character.service";
 
 export const getCharacters: Handler = async (_, res) => {
     const data = await scraper(`${baseUrlEndpoint}/db/char/characters/?lang=EN`, parseCharactersPageData);
@@ -12,6 +16,13 @@ export const getCharacters: Handler = async (_, res) => {
 export const getCharacter: Handler = async (req, res) => {
     const { char } = req.params;
     const data = await scraper(`${baseUrlEndpoint}/db/char/${char}/?lang=EN`, parseCharacterPageData);
+
+    res.send(data);
+};
+
+export const getCharacterInfo: Handler = async (req, res) => {
+    const { char, info } = req.params;
+    const data = await scraper(`${baseUrlEndpoint}/db/char/${char}?lang=EN`, parseCharacter[info]);
 
     res.send(data);
 };
