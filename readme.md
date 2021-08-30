@@ -1,4 +1,4 @@
-# Foobar
+# Genshin API
 
 This is an API that houses data regarding the game Genshin Impact. The data here is scraped from [honey impact](https://genshin.honeyhunterworld.com/?lang=EN) using [puppeteer](https://developers.google.com/web/tools/puppeteer).
 
