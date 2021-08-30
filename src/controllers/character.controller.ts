@@ -1,12 +1,7 @@
 import { scraper } from "../utils/scraper";
 import { Handler } from "express";
 import { baseUrlEndpoint } from "../utils/constants";
-import {
-    parseCharactersPageData,
-    parseCharacterPageData,
-    parseCharacter,
-    ParseCharacter,
-} from "./../services/character.service";
+import { parseCharactersPageData, parseCharacter, ParseCharacter } from "./../services/character.service";
 
 export const getCharacters: Handler = async (_, res) => {
     const data = await scraper(`${baseUrlEndpoint}/db/char/characters/?lang=EN`, parseCharactersPageData);
@@ -21,7 +16,14 @@ export const getCharacter: Handler = async (req, res) => {
         return;
     }
 
-    const data = await scraper(`${baseUrlEndpoint}/db/char/${char}/?lang=EN`, parseCharacterPageData);
+    let data = {};
+    for (let parser in parseCharacter) {
+        const result = await scraper(
+            `${baseUrlEndpoint}/db/char/${char}/?lang=EN`,
+            parseCharacter[parser as keyof ParseCharacter]
+        );
+        data = { ...data, [parser]: result };
+    }
 
     res.send(data);
 };

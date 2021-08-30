@@ -59,18 +59,6 @@ function parseCharacterPassives() {
     }));
 }
 
-export function parseCharacterPageData() {
-    const bio = parseCharacterBio();
-    const stats = parseCharacterStats();
-    const passives = parseCharacterPassives();
-
-    return {
-        bio,
-        stats,
-        passives,
-    };
-}
-
 // TODO: Add constellations, talents,
 
 export interface ParseCharacter {
