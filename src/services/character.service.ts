@@ -19,3 +19,16 @@ export function parseCharactersPageData() {
         },
     }));
 }
+
+export function parseCharacterPageData() {
+    const bioDataNode = document.querySelector("table.item_main_table");
+
+    // TODO: fix values of Element and Rarity
+    const bio = Array.from(bioDataNode!.querySelectorAll("tr"))
+        .map((row) => Array.from(row.querySelectorAll("td")).map((data) => data.textContent))
+        .filter((data) => data[0] !== "");
+
+    return {
+        bio: Object.fromEntries(bio),
+    };
+}
