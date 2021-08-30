@@ -22,13 +22,24 @@ export function parseCharactersPageData() {
 
 export function parseCharacterPageData() {
     const bioDataNode = document.querySelector("table.item_main_table");
+    const statsDataNode = document.querySelector("div.skilldmgwrapper");
 
     // TODO: fix values of Element and Rarity
     const bio = Array.from(bioDataNode!.querySelectorAll("tr"))
         .map((row) => Array.from(row.querySelectorAll("td")).map((data) => data.textContent))
         .filter((data) => data[0] !== "");
 
+    const statsHeaders = Array.from(
+        statsDataNode!.querySelector("tr:first-child")!.querySelectorAll("td")
+    ).map((cell) => cell.textContent);
+    const statsData = Array.from(statsDataNode!.querySelectorAll("tr:not(:first-child)")).map((row) =>
+        Array.from(row.querySelectorAll("td"))
+            .map((cell, i) => [statsHeaders[i], cell.textContent])
+            .filter((cell) => cell[0] !== statsHeaders[statsHeaders.length - 1])
+    );
+
     return {
         bio: Object.fromEntries(bio),
+        stats: statsData.map((stats) => Object.fromEntries(stats)),
     };
 }
