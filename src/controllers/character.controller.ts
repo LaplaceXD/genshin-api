@@ -16,7 +16,11 @@ export const getCharacters: Handler = async (_, res) => {
 
 export const getCharacter: Handler = async (req, res) => {
     const { char } = req.params;
-    if (!char) return res.status(404).send(`Character: ${char} was not found.`);
+    if (!char) {
+        res.status(404).send(`Character: ${char} was not found.`);
+        return;
+    }
+
     const data = await scraper(`${baseUrlEndpoint}/db/char/${char}/?lang=EN`, parseCharacterPageData);
 
     res.send(data);
@@ -24,8 +28,14 @@ export const getCharacter: Handler = async (req, res) => {
 
 export const getCharacterInfo: Handler = async (req, res) => {
     const { char, info } = req.params;
-    if (!char) return res.status(404).send(`Character: ${char} was not found.`);
-    if (!info) return res.status(404).send(`Data type: ${info} was not found.`);
+    if (!char) {
+        res.status(404).send(`Character: ${char} was not found.`);
+        return;
+    }
+    if (!info) {
+        res.status(404).send(`Data type: ${info} was not found.`);
+        return;
+    }
 
     const data = await scraper(
         `${baseUrlEndpoint}/db/char/${char}?lang=EN`,
