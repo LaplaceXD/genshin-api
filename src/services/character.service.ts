@@ -20,14 +20,8 @@ export function parseCharactersPageData() {
     }));
 }
 
-export function parseCharacterPageData() {
-    const bioDataNode = document.querySelector("table.item_main_table");
+function parseCharacterStats() {
     const statsDataNode = document.querySelector("div.skilldmgwrapper");
-
-    // TODO: fix values of Element and Rarity
-    const bio = Array.from(bioDataNode!.querySelectorAll("tr"))
-        .map((row) => Array.from(row.querySelectorAll("td")).map((data) => data.textContent))
-        .filter((data) => data[0] !== "");
 
     const statsHeaders = Array.from(
         statsDataNode!.querySelector("tr:first-child")!.querySelectorAll("td")
@@ -38,8 +32,36 @@ export function parseCharacterPageData() {
             .filter((cell) => cell[0] !== statsHeaders[statsHeaders.length - 1])
     );
 
+    return statsData.map((stats) => Object.fromEntries(stats));
+}
+
+function parseCharacterBio() {
+    const bioDataNode = document.querySelector("table.item_main_table");
+
+    // TODO: fix values of Element and Rarity
+    const bio = Array.from(bioDataNode!.querySelectorAll("tr"))
+        .map((row) => Array.from(row.querySelectorAll("td")).map((data) => data.textContent))
+        .filter((data) => data[0] !== "");
+
+    return Object.fromEntries(bio);
+}
+
+export function parseCharacterPageData() {
+    const bio = parseCharacterBio();
+    const stats = parseCharacterStats();
+
     return {
-        bio: Object.fromEntries(bio),
-        stats: statsData.map((stats) => Object.fromEntries(stats)),
+        bio,
+        stats,
     };
 }
+
+export interface ParseCharacter {
+    bio: () => any;
+    stats: () => any;
+}
+
+export const parseCharacter: ParseCharacter = {
+    bio: parseCharacterBio,
+    stats: parseCharacterStats,
+};
